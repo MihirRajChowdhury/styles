@@ -52,7 +52,7 @@ export function addFlavor(styleObject: any) {
     // Handle border radius separately
     let hasBorderRadius = false;
 
-    // const validBorderStyles = ["solid", "dotted", "dashed"];
+    const validBorderStyles = ["solid", "dotted", "dashed"];
 
     // Helper function to normalize border style
     const normalizeBorderStyle = (style: string): string => {
@@ -91,11 +91,11 @@ export function addFlavor(styleObject: any) {
     };
 
     // Helper function to handle flex display conversion
-    const handleFlexDisplay = (currentStyles: any) => {
+    const handleFlexDisplay = (displayValue: string, currentStyles: any) => {
       const flexStyles: any = { flex: 1 };
 
       // Check if flexDirection is already defined in the original styles
-      if (currentStyles.flexDirection) {
+      if (currentStyles?.flexDirection) {
         flexStyles.flexDirection = currentStyles.flexDirection;
       } else {
         // Default to 'column' as this is React Native's default
@@ -103,18 +103,18 @@ export function addFlavor(styleObject: any) {
       }
 
       // Handle flex-specific properties
-      if (currentStyles.flexDirection) delete currentStyles.flexDirection;
-      if (currentStyles.flexWrap) flexStyles.flexWrap = currentStyles.flexWrap;
-      if (currentStyles.justifyContent)
+      if (currentStyles?.flexDirection) delete currentStyles.flexDirection;
+      if (currentStyles?.flexWrap) flexStyles.flexWrap = currentStyles.flexWrap;
+      if (currentStyles?.justifyContent)
         flexStyles.justifyContent = currentStyles.justifyContent;
-      if (currentStyles.alignItems)
+      if (currentStyles?.alignItems)
         flexStyles.alignItems = currentStyles.alignItems;
-      if (currentStyles.alignContent)
+      if (currentStyles?.alignContent)
         flexStyles.alignContent = currentStyles.alignContent;
-      if (currentStyles.flexGrow) flexStyles.flexGrow = currentStyles.flexGrow;
-      if (currentStyles.flexShrink)
+      if (currentStyles?.flexGrow) flexStyles.flexGrow = currentStyles.flexGrow;
+      if (currentStyles?.flexShrink)
         flexStyles.flexShrink = currentStyles.flexShrink;
-      if (currentStyles.flexBasis)
+      if (currentStyles?.flexBasis)
         flexStyles.flexBasis = currentStyles.flexBasis;
 
       return flexStyles;
@@ -231,11 +231,11 @@ export function addFlavor(styleObject: any) {
         }
       }
 
-      // // for transform
-      // if (isValidTransformType(val)) {
-      //   val = cssTransformToReactNative(val);
-      //   console.log(`chnanging the value of the ${key} is ${val}`);
-      // }
+      // for transform
+      if (isValidTransformType(val)) {
+        val = cssTransformToReactNative(val);
+        console.log(`chnanging the value of the ${key} is ${val}`);
+      }
 
       newStyleObject[key] = val;
     }
