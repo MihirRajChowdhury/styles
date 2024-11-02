@@ -1,3 +1,4 @@
+/* eslint-disable etc/no-commented-out-code */
 export const PX_TAG = "px ";
 export const REM_TAG = "rem";
 export const IMPORTANT = " !important";
@@ -17,7 +18,13 @@ export const DEFAULT_BORDER_WIDTH = 1;
 export const DEFAULT_BORDER_STYLE = "solid";
 export const DEFAULT_BORDER_COLOR = "black";
 export const DEFAULT_BORDER_RADIUS = 4;
-export const DEFAULT_BORDER = (DEFAULT_BORDER_WIDTH + PX_TAG + DEFAULT_BORDER_STYLE + " " + DEFAULT_BORDER_COLOR);
+// export const DEFAULT_BORDER = (DEFAULT_BORDER_WIDTH + PX_TAG + DEFAULT_BORDER_STYLE + " " + DEFAULT_BORDER_COLOR);
+
+export const DEFAULT_BORDER = {
+  borderColor: DEFAULT_BORDER_COLOR,
+  borderStyle: DEFAULT_BORDER_STYLE,
+  borderWidth: DEFAULT_BORDER_WIDTH + PX_TAG,
+};
 
 /**
  * Shadow related defaults
