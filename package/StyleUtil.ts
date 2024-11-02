@@ -1,3 +1,4 @@
+/* eslint-disable no-fallthrough */
 import {
   LARGE_WINDOW_WIDTH,
   MEDIUM_WINDOW_WIDTH,
@@ -8,6 +9,10 @@ import {
 import { WrappidData } from "./context/WrappidSyncer";
 import { getMergedStyles } from "./StylesProvider";
 import UtilityClasses from "./utility/UtilityClasses";
+import {
+  cssTransformToReactNative,
+  isValidTransformType
+} from "./utills/styles.utils";
 
 const { innerWidth: windowWidth } = window;
 
@@ -47,6 +52,76 @@ export function addFlavor(styleObject: any) {
   if (config?.platform === "mobile") {
     const newStyleObject = <any>{};
     const keys = Object.keys(styleObject);
+    // Handle border radius separately
+    let hasBorderRadius = false;
+
+    const validBorderStyles = ["solid", "dotted", "dashed"];
+
+    // Helper function to normalize border style
+    const normalizeBorderStyle = (style: string): string => {
+      if (!style) return "solid"; // default to solid
+
+      style = style.toLowerCase().trim();
+
+      // Direct mapping of common border styles
+      switch (style) {
+        case "none":
+
+        case "hidden":
+          return "solid"; // Use solid with 0 width instead
+
+        case "double":
+
+        case "groove":
+
+        case "ridge":
+
+        case "inset":
+
+        case "outset":
+          return "solid"; // Fall back to solid for unsupported styles
+
+        case "dotted":
+
+        case "dashed":
+
+        case "solid":
+          return style; // Keep supported styles as is
+
+        default:
+          return "solid"; // Default fallback
+      }
+    };
+
+    // Helper function to handle flex display conversion
+    const handleFlexDisplay = (displayValue: string, currentStyles: any) => {
+      const flexStyles: any = { flex: 1 };
+
+      // Check if flexDirection is already defined in the original styles
+      if (currentStyles.flexDirection) {
+        flexStyles.flexDirection = currentStyles.flexDirection;
+      } else {
+        // Default to 'column' as this is React Native's default
+        flexStyles.flexDirection = "row";
+      }
+
+      // Handle flex-specific properties
+      if (currentStyles.flexDirection) delete currentStyles.flexDirection;
+      if (currentStyles.flexWrap) flexStyles.flexWrap = currentStyles.flexWrap;
+      if (currentStyles.justifyContent)
+        flexStyles.justifyContent = currentStyles.justifyContent;
+      if (currentStyles.alignItems)
+        flexStyles.alignItems = currentStyles.alignItems;
+      if (currentStyles.alignContent)
+        flexStyles.alignContent = currentStyles.alignContent;
+      if (currentStyles.flexGrow) flexStyles.flexGrow = currentStyles.flexGrow;
+      if (currentStyles.flexShrink)
+        flexStyles.flexShrink = currentStyles.flexShrink;
+      if (currentStyles.flexBasis)
+        flexStyles.flexBasis = currentStyles.flexBasis;
+
+      return flexStyles;
+    };
 
     for (let i = 0; i < keys.length; i++) {
       let key = keys[i];
@@ -64,10 +139,43 @@ export function addFlavor(styleObject: any) {
         val = val + "px";
       }
 
+      // Handle border styles
+      if (key.includes("borderStyle")) {
+        val = normalizeBorderStyle(val);
+
+        // If borderStyle is 'none' or 'hidden', set borderWidth to 0
+        if (val === "solid" && ["none", "hidden"].includes(styleObject[key])) {
+          newStyleObject["borderWidth"] = 0;
+        }
+      }
+
+      // Enhanced border radius handling
+      if (key.includes("border")) {
+        if (key.includes("Radius")) {
+          hasBorderRadius = true;
+          // Convert percentage values to numbers if needed
+          if (typeof val === "string" && val.includes("%")) {
+            // For percentage values, you might want to calculate based on width/height
+            // For now, we'll use a reasonable default
+            val = parseFloat(val) * 0.01 * 100; // Convert percentage to points
+          } else {
+            val = parseFloat(val);
+          }
+        } else if (key === "border" && (val === "unset" || val === "unset ")) {
+          val = "0px";
+        }
+      }
+
       if (key === "display") {
         if (val?.includes("flex")) {
-          key = "flex";
-          val = 1;
+          // Get all flex-related styles
+          const flexStyles = handleFlexDisplay(val, styleObject);
+
+          // Apply flex styles to newStyleObject
+          Object.assign(newStyleObject, flexStyles);
+
+          // Skip to next iteration since we've handled all flex properties
+          continue;
         } else {
           continue;
         }
@@ -96,6 +204,12 @@ export function addFlavor(styleObject: any) {
         continue;
       }
 
+      // Handle flex direction explicitly if it's set
+      if (key === "flexDirection") {
+        newStyleObject[key] = val;
+        continue;
+      }
+
       // for rem
       // for fontSize
       if (key === "fontSize") {
@@ -104,9 +218,41 @@ export function addFlavor(styleObject: any) {
         }
       }
 
-      // eslint-disable-next-line no-console
-      //console.log("KEY:", key, "VAL:", val);
+      //  for margin and padding
+      if (key.includes("margin") || key.includes("padding")) {
+        val = val.includes("px") ? parseInt(val.replace("px", "").trim()) : val;
+      }
+
+      // Check for overflow property and replace 'auto' with a supported value
+      if (key.includes("overflow")) {
+        if (val === "auto") {
+          val = "scroll"; // Replace 'auto' with 'scroll'
+        } else if (["visible", "hidden", "scroll"].includes(val)) {
+          // - val = val; // Use the original value if it's valid
+        } else {
+          continue; // Skip to the next property
+        }
+      }
+
+      // for transform
+      if (isValidTransformType(val)) {
+        val = cssTransformToReactNative(val);
+        console.log(`chnanging the value of the ${key} is ${val}`);
+      }
+
       newStyleObject[key] = val;
+    }
+
+    // If borderRadius is present, ensure overflow is handled correctly
+    if (hasBorderRadius) {
+      // Only set overflow hidden if it hasn't been explicitly set
+      // eslint-disable-next-line no-prototype-builtins
+      if (!newStyleObject.hasOwnProperty("overflow")) {
+        newStyleObject.overflow = "hidden";
+      }
+
+      // Ensure the component clips its children
+      newStyleObject.clipChildren = true; // Android specific
     }
     return newStyleObject;
   } else {
@@ -155,8 +301,9 @@ export function getEffectiveStyle(classNames: any[]) {
         ...getDefaultStyle(className, mergedDefaultStyles),
       };
 
-    // eslint-disable-next-line no-empty
-    } else {}
+      // eslint-disable-next-line no-empty
+    } else {
+    }
     // Get windowWidth specific styles
     if (windowWidth >= SMALL_WINDOW_WIDTH) {
       if (getSmallStyle(className, mergedSmallStyles)) {
@@ -164,8 +311,9 @@ export function getEffectiveStyle(classNames: any[]) {
           ...styleObject,
           ...getSmallStyle(className, mergedSmallStyles),
         };
-      // eslint-disable-next-line no-empty
-      } else {}
+        // eslint-disable-next-line no-empty
+      } else {
+      }
     }
     if (windowWidth >= MEDIUM_WINDOW_WIDTH) {
       if (getMediumStyle(className, mergedMediumStyles)) {
@@ -173,9 +321,10 @@ export function getEffectiveStyle(classNames: any[]) {
           ...styleObject,
           ...getMediumStyle(className, mergedMediumStyles),
         };
-        
-      // eslint-disable-next-line no-empty
-      } else {}
+
+        // eslint-disable-next-line no-empty
+      } else {
+      }
     }
     if (windowWidth >= LARGE_WINDOW_WIDTH) {
       if (getLargeStyle(className, mergedLargeStyles)) {
@@ -183,8 +332,9 @@ export function getEffectiveStyle(classNames: any[]) {
           ...styleObject,
           ...getLargeStyle(className, mergedLargeStyles),
         };
-      // eslint-disable-next-line no-empty
-      } else {}
+        // eslint-disable-next-line no-empty
+      } else {
+      }
     }
     if (windowWidth >= X_LARGE_WINDOW_WIDTH) {
       if (getXLargeStyle(className, mergedXLargeStyles)) {
@@ -210,7 +360,10 @@ export function getEffectiveStyle(classNames: any[]) {
     }
   });
 
-  const finalStyleObject = addFlavor(styleObject);
+  //add platformspecificFlovour in utils folder
+  if (config?.platform === "mobile") {
+    return addFlavor(styleObject);
+  }
 
   // eslint-disable-next-line no-console
   // console.log(
@@ -219,7 +372,7 @@ export function getEffectiveStyle(classNames: any[]) {
   // 	classNames
   // );
 
-  return finalStyleObject;
+  return styleObject;
 }
 
 const getDefaultStyle = (className: string | any, mergedStyles: any) => {

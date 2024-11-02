@@ -1,7 +1,6 @@
 /* eslint-disable sort-keys-fix/sort-keys-fix */
 import { BaseStyle } from "../base/BaseStyle";
 import {
-  DEFAULT_BORDER,
   DEFAULT_BORDER_RADIUS,
   DEFAULT_BORDER_WIDTH,
   DEFAULT_MARGIN,
@@ -11,7 +10,8 @@ import {
   DEFAULT_SPACING,
   IMPORTANT,
   PX_TAG,
-  REM_TAG
+  REM_TAG,
+  DEFAULT_BORDER
 } from "../base/constants";
 
 export default class DefaultUtilityStyles extends BaseStyle {
@@ -19,10 +19,12 @@ export default class DefaultUtilityStyles extends BaseStyle {
     super();
 
     this.style = {
-      scrollBarHide: {
-        msOverflowStyle: "none", // For IE and Edge
-        scrollbarWidth : "none", // For Firefox
-      },
+      //deleted in last as no needed
+      // scrollBarHide: {
+      //   msOverflowStyle: "none",
+      //   scrollbarWidth : "none",
+      // },
+
       /**************************************************
        * Alignment
        *************************************************/
@@ -288,12 +290,13 @@ export default class DefaultUtilityStyles extends BaseStyle {
         backgroundColor: "#fff",
       },
 
-      bgGraph: {
-        background:
-          "linear-gradient(-90deg, rgba(0,0,0,.05) 1px, transparent 1px), linear-gradient(rgba(0,0,0,.05) 1px, transparent 1px), linear-gradient(-90deg, rgba(0, 0, 0, .04) 1px, transparent 1px), inear-gradient(rgba(0,0,0,.04) 1px, transparent 1px), inear-gradient(transparent 3px, #f2f2f2 3px, #f2f2f2 78px, transparent 78px), inear-gradient(-90deg, #aaa 1px, transparent 1px), inear-gradient(-90deg, transparent 3px, #f2f2f2 3px, #f2f2f2 78px, transparent 78px), inear-gradient(#aaa 1px, transparent 1px)",
-        backgroundSize:
-          "4px 4px, 4px 4px, 80px 80px, 80px 80px, 80px 80px, 80px 80px, 80px 80px, 80px 80px",
-      },
+      // not working in mobile so commented
+      // bgGraph: {
+      //   background:
+      //     "linear-gradient(-90deg, rgba(0,0,0,.05) 1px, transparent 1px), linear-gradient(rgba(0,0,0,.05) 1px, transparent 1px), linear-gradient(-90deg, rgba(0, 0, 0, .04) 1px, transparent 1px), inear-gradient(rgba(0,0,0,.04) 1px, transparent 1px), inear-gradient(transparent 3px, #f2f2f2 3px, #f2f2f2 78px, transparent 78px), inear-gradient(-90deg, #aaa 1px, transparent 1px), inear-gradient(-90deg, transparent 3px, #f2f2f2 3px, #f2f2f2 78px, transparent 78px), inear-gradient(#aaa 1px, transparent 1px)",
+      //   backgroundSize:
+      //     "4px 4px, 4px 4px, 80px 80px, 80px 80px, 80px 80px, 80px 80px, 80px 80px, 80px 80px",
+      // },
 
       bgIsometricGrid: {
         backgroundSize : "20px 20px",
@@ -377,24 +380,42 @@ export default class DefaultUtilityStyles extends BaseStyle {
       /**************************************************
        * Border
        *************************************************/
-      border : { border: DEFAULT_BORDER },
+      border : { ...DEFAULT_BORDER },
       border0: { border: "none" },
 
-      borderTop : { border: "unset", borderTop: DEFAULT_BORDER },
-      borderTop0: { borderTop: "none" },
+      borderTop: {
+        border        : "unset",
+        borderTopWidth: DEFAULT_BORDER_WIDTH + PX_TAG,
+      },
+      borderTop0: { ...DEFAULT_BORDER, borderTopWidth: 0 + PX_TAG },
 
-      borderEnd   : { border: "unset", borderRight: DEFAULT_BORDER },
-      borderEnd0  : { borderRight: "none" },
-      borderRight : { border: "unset", borderRight: DEFAULT_BORDER },
-      borderRight0: { borderRight: "none" },
+      borderEnd: {
+        border          : "unset",
+        borderRightWidth: DEFAULT_BORDER_WIDTH + PX_TAG,
+      },
+      borderEnd0 : { ...DEFAULT_BORDER, borderRightWidth: 0 + PX_TAG },
+      borderRight: {
+        border          : "unset",
+        borderRightWidth: DEFAULT_BORDER_WIDTH + PX_TAG,
+      },
+      borderRight0: { ...DEFAULT_BORDER, borderRightWidth: 0 + PX_TAG },
 
-      borderBottom : { border: "unset", borderBottom: DEFAULT_BORDER },
-      borderBottom0: { borderBottom: "none" },
+      borderBottom: {
+        border           : "unset",
+        borderBottomWidth: DEFAULT_BORDER_WIDTH + PX_TAG,
+      },
+      borderBottom0: { ...DEFAULT_BORDER, borderBottomWidth: 0 + PX_TAG },
 
-      borderStart : { border: "unset", borderLeft: DEFAULT_BORDER },
-      borderStart0: { borderLeft: "none" },
-      borderLeft  : { border: "unset", borderLeft: DEFAULT_BORDER },
-      borderLeft0 : { borderLeft: "none" },
+      borderStart: {
+        border         : "unset",
+        borderLeftWidth: DEFAULT_BORDER_WIDTH + PX_TAG,
+      },
+      borderStart0: { ...DEFAULT_BORDER, borderLeftWidth: 0 + PX_TAG },
+      borderLeft  : {
+        border         : "unset",
+        borderLeftWidth: DEFAULT_BORDER_WIDTH + PX_TAG,
+      },
+      borderLeft0: { ...DEFAULT_BORDER, borderLeftWidth: 0 + PX_TAG },
 
       borderPrimary     : { borderColor: this.theme.palette?.primary?.main },
       borderPrimaryLight: { borderColor: this.theme.palette?.primary?.light },

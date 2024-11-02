@@ -4,7 +4,7 @@
  *************************************************/
 const UtilityClasses = {
   DEV_BORDER: "devBorder",
-  SCROLL_BAR_HIDE: "scrollBarHide",
+  // SCROLL_BAR_HIDE: "scrollBarHide", 
 
   /**************************************************
    * Alignment
@@ -225,63 +225,65 @@ const UtilityClasses = {
     BG_GREY_A400: "bgGreyA400",
     BG_GREY_A700: "bgGreyA700",
 
-    BG_DOT_GRID_1: "bgDotGrid1",
-    BG_DOT_GRID_2: "bgDotGrid2",
-    BG_DOT_GRID_3: "bgDotGrid3",
-    BG_DOT_GRID_4: "bgDotGrid4",
-    BG_DOT_GRID_5: "bgDotGrid5",
+    // As those are using gradiant that not worked in react native so commented out
 
-    BG_SQUARE_GRID_1: "bgSquareGrid1",
-    BG_SQUARE_GRID_2: "bgSquareGrid2",
-    BG_SQUARE_GRID_3: "bgSquareGrid3",
-    BG_SQUARE_GRID_4: "bgSquareGrid4",
-    BG_SQUARE_GRID_5: "bgSquareGrid5",
+    // BG_DOT_GRID_1: "bgDotGrid1",
+    // BG_DOT_GRID_2: "bgDotGrid2",
+    // BG_DOT_GRID_3: "bgDotGrid3",
+    // BG_DOT_GRID_4: "bgDotGrid4",
+    // BG_DOT_GRID_5: "bgDotGrid5",
 
-    BG_GRAPH: "bgGraph",
-    BG_ISOMETRIC_GRID: "bgIsometricGrid",
+    // BG_SQUARE_GRID_1: "bgSquareGrid1",
+    // BG_SQUARE_GRID_2: "bgSquareGrid2",
+    // BG_SQUARE_GRID_3: "bgSquareGrid3",
+    // BG_SQUARE_GRID_4: "bgSquareGrid4",
+    // BG_SQUARE_GRID_5: "bgSquareGrid5",
+
+    // BG_GRAPH: "bgGraph",
+    // BG_ISOMETRIC_GRID: "bgIsometricGrid",
   },
   /**************************************************
    * Gradient
    *************************************************/
-  GRADIENT: {
-    LINEAR: {
-      TO_BOTTOM: "gradientLinearToBottom",
-      TO_TOP: "gradientLinearToTop",
-      TO_RIGHT: "gradientLinearToRight",
-      TO_LEFT: "gradientLinearToLeft",
-      TO_BOTTOM_RIGHT: "gradientLinearToBottomRight",
-      TO_BOTTOM_LEFT: "gradientLinearToBottomLeft",
-      TO_TOP_RIGHT: "gradientLinearToTopRight",
-      TO_TOP_LEFT: "gradientLinearToTopLeft",
-    },
-    RADIAL: {
-      CIRCLE: "gradientRadialCircle",
-      ELLIPSE: "gradientRadialEllipse",
-      CLOSEST_SIDE: "gradientRadialClosestSide",
-      CLOSEST_CORNER: "gradientRadialClosestCorner",
-      FARTHEST_SIDE: "gradientRadialFarthestSide",
-      FARTHEST_CORNER: "gradientRadialFarthestCorner",
-    },
-    REPEAT: {
-      REPEAT: "gradientRepeat",
-      REPEAT_X: "gradientRepeatX",
-      REPEAT_Y: "gradientRepeatY",
-      NO_REPEAT: "gradientNoRepeat",
-      ROUND: "gradientRound",
-      COVER: "gradientCover",
-      CONTAIN: "gradientContain",
-    },
-    CONIC: {
-      FROM_TOP: "gradientConicFromTop",
-      FROM_RIGHT: "gradientConicFromRight",
-      FROM_BOTTOM: "gradientConicFromBottom",
-      FROM_LEFT: "gradientConicFromLeft",
-      FROM_TOP_RIGHT: "gradientConicFromTopRight",
-      FROM_TOP_LEFT: "gradientConicFromTopLeft",
-      FROM_BOTTOM_RIGHT: "gradientConicFromBottomRight",
-      FROM_BOTTOM_LEFT: "gradientConicFromBottomLeft",
-    },
-  },
+  // GRADIENT: {
+  //   LINEAR: {
+  //     TO_BOTTOM: "gradientLinearToBottom",
+  //     TO_TOP: "gradientLinearToTop",
+  //     TO_RIGHT: "gradientLinearToRight",
+  //     TO_LEFT: "gradientLinearToLeft",
+  //     TO_BOTTOM_RIGHT: "gradientLinearToBottomRight",
+  //     TO_BOTTOM_LEFT: "gradientLinearToBottomLeft",
+  //     TO_TOP_RIGHT: "gradientLinearToTopRight",
+  //     TO_TOP_LEFT: "gradientLinearToTopLeft",
+  //   },
+  //   RADIAL: {
+  //     CIRCLE: "gradientRadialCircle",
+  //     ELLIPSE: "gradientRadialEllipse",
+  //     CLOSEST_SIDE: "gradientRadialClosestSide",
+  //     CLOSEST_CORNER: "gradientRadialClosestCorner",
+  //     FARTHEST_SIDE: "gradientRadialFarthestSide",
+  //     FARTHEST_CORNER: "gradientRadialFarthestCorner",
+  //   },
+  //   REPEAT: {
+  //     REPEAT: "gradientRepeat",
+  //     REPEAT_X: "gradientRepeatX",
+  //     REPEAT_Y: "gradientRepeatY",
+  //     NO_REPEAT: "gradientNoRepeat",
+  //     ROUND: "gradientRound",
+  //     COVER: "gradientCover",
+  //     CONTAIN: "gradientContain",
+  //   },
+  //   CONIC: {
+  //     FROM_TOP: "gradientConicFromTop",
+  //     FROM_RIGHT: "gradientConicFromRight",
+  //     FROM_BOTTOM: "gradientConicFromBottom",
+  //     FROM_LEFT: "gradientConicFromLeft",
+  //     FROM_TOP_RIGHT: "gradientConicFromTopRight",
+  //     FROM_TOP_LEFT: "gradientConicFromTopLeft",
+  //     FROM_BOTTOM_RIGHT: "gradientConicFromBottomRight",
+  //     FROM_BOTTOM_LEFT: "gradientConicFromBottomLeft",
+  //   },
+  // },
 
   /**************************************************
    * Border
