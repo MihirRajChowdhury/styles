@@ -15,7 +15,7 @@ export default class SmallSCStyles extends BaseStyle {
        *************************************************/
       scFeedbackDialog: {
         minHeight: "30%" + IMPORTANT,
-        minWidth : "20%" + IMPORTANT
+        minWidth : "25%" + IMPORTANT
       },
 
       /**************************************************
