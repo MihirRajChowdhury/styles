@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.170](https://github.com/wrappid/styles/compare/v0.0.169...v0.0.170) (2024-11-02)
+
+
+### Bug Fixes
+
+* **core:** :zap: dialog width fixed ([1381fe6](https://github.com/wrappid/styles/commit/1381fe600f4c4147cd25efc1ce40cc1faa5a9f46))
+
 ### [0.0.169](https://github.com/wrappid/styles/compare/v0.0.168...v0.0.169) (2024-11-02)
 
 
