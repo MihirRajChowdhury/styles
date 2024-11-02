@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.168](https://github.com/wrappid/styles/compare/v0.0.167...v0.0.168) (2024-11-02)
+
+
+### Bug Fixes
+
+* **global:** :bug: changes styles related code for mobile application ([d9bed17](https://github.com/wrappid/styles/commit/d9bed17b42f3e8447ff4cc08a94dcea007c69b28)), closes [#121](https://github.com/wrappid/styles/issues/121)
+
 ### [0.0.167](https://github.com/wrappid/styles/compare/v0.0.166...v0.0.167) (2024-10-17)
 
 
