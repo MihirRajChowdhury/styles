@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.171](https://github.com/wrappid/styles/compare/v0.0.170...v0.0.171) (2024-11-02)
+
+
+### Bug Fixes
+
+* **core:** :zap: app bar style fix ([67456da](https://github.com/wrappid/styles/commit/67456da42e9665386796ab2bd7a227061be44718))
+
 ### [0.0.170](https://github.com/wrappid/styles/compare/v0.0.169...v0.0.170) (2024-11-02)
 
 
