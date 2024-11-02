@@ -1,4 +1,5 @@
 /* eslint-disable no-fallthrough */
+/* eslint-disable etc/no-commented-out-code */
 import {
   LARGE_WINDOW_WIDTH,
   MEDIUM_WINDOW_WIDTH,
@@ -9,10 +10,6 @@ import {
 import { WrappidData } from "./context/WrappidSyncer";
 import { getMergedStyles } from "./StylesProvider";
 import UtilityClasses from "./utility/UtilityClasses";
-import {
-  cssTransformToReactNative,
-  isValidTransformType
-} from "./utills/styles.utils";
 
 const { innerWidth: windowWidth } = window;
 
@@ -55,7 +52,7 @@ export function addFlavor(styleObject: any) {
     // Handle border radius separately
     let hasBorderRadius = false;
 
-    const validBorderStyles = ["solid", "dotted", "dashed"];
+    // const validBorderStyles = ["solid", "dotted", "dashed"];
 
     // Helper function to normalize border style
     const normalizeBorderStyle = (style: string): string => {
@@ -94,7 +91,7 @@ export function addFlavor(styleObject: any) {
     };
 
     // Helper function to handle flex display conversion
-    const handleFlexDisplay = (displayValue: string, currentStyles: any) => {
+    const handleFlexDisplay = (currentStyles: any) => {
       const flexStyles: any = { flex: 1 };
 
       // Check if flexDirection is already defined in the original styles
@@ -169,7 +166,7 @@ export function addFlavor(styleObject: any) {
       if (key === "display") {
         if (val?.includes("flex")) {
           // Get all flex-related styles
-          const flexStyles = handleFlexDisplay(val, styleObject);
+          const flexStyles = handleFlexDisplay(styleObject);
 
           // Apply flex styles to newStyleObject
           Object.assign(newStyleObject, flexStyles);
@@ -234,11 +231,11 @@ export function addFlavor(styleObject: any) {
         }
       }
 
-      // for transform
-      if (isValidTransformType(val)) {
-        val = cssTransformToReactNative(val);
-        console.log(`chnanging the value of the ${key} is ${val}`);
-      }
+      // // for transform
+      // if (isValidTransformType(val)) {
+      //   val = cssTransformToReactNative(val);
+      //   console.log(`chnanging the value of the ${key} is ${val}`);
+      // }
 
       newStyleObject[key] = val;
     }
