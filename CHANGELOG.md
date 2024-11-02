@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.169](https://github.com/wrappid/styles/compare/v0.0.168...v0.0.169) (2024-11-02)
+
+
+### Bug Fixes
+
+* **core:** :bug: build fix ([140ba24](https://github.com/wrappid/styles/commit/140ba24cd86ac6614853707004197937f6d728d7)), closes [#121](https://github.com/wrappid/styles/issues/121)
+
 ### [0.0.168](https://github.com/wrappid/styles/compare/v0.0.167...v0.0.168) (2024-11-02)
 
 
