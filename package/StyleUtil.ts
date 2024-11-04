@@ -1,5 +1,6 @@
-/* eslint-disable etc/no-commented-out-code */
 /* eslint-disable no-fallthrough */
+/* eslint-disable etc/no-commented-out-code */
+
 import {
   LARGE_WINDOW_WIDTH,
   MEDIUM_WINDOW_WIDTH,
@@ -120,6 +121,24 @@ export function addFlavor(styleObject: any) {
       return flexStyles;
     };
 
+    // Temporary fix
+    const viewportToPercentage = (value: string) => {
+      // Check if the input is in vw or vh, then strip the units
+      const isVw = value.endsWith("vw");
+      const isVh = value.endsWith("vh");
+
+      if (!isVw && !isVh) {
+        throw new Error(
+          "Invalid input: Please provide a value with 'vw' or 'vh'."
+        );
+      }
+
+      const numericValue = parseFloat(value.replace(isVw ? "vw" : "vh", ""));
+
+      // Return the value in percentage format
+      return `${numericValue}%`;
+    };
+
     for (let i = 0; i < keys.length; i++) {
       let key = keys[i];
       let val = styleObject[key];
@@ -180,11 +199,13 @@ export function addFlavor(styleObject: any) {
         (key === "height" || key === "minHeight" || key === "maxHeight") &&
         val?.includes("vh")
       ) {
+        newStyleObject[key] = viewportToPercentage(val); // Converts vh values to percentages
         continue;
       } else if (
         (key === "width" || key === "minWidth" || key === "maxWidth") &&
         val?.includes("vw")
       ) {
+        newStyleObject[key] = viewportToPercentage(val); // Assuming viewportToPercentage can handle vw and vh
         continue;
       } else if (
         key === "position" &&
