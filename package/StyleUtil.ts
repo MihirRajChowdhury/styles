@@ -12,7 +12,31 @@ import { WrappidData } from "./context/WrappidSyncer";
 import { getMergedStyles } from "./StylesProvider";
 import UtilityClasses from "./utility/UtilityClasses";
 
-const { innerWidth: windowWidth } = window;
+// const { innerWidth: windowWidth } = window;
+// const { windowWidth = null, windowHeight = null } =
+//   WrappidData?.dimensions || {};
+// const { windowWidth, windowHeight } = WrappidData?.dimensions ?? {};
+
+// Define module-level variables for dimensions
+let windowWidth: number | null = null;
+let windowHeight: number | null = null;
+
+// Function to update dimensions from WrappidData
+function updateDimensions() {
+  if (WrappidData?.dimensions) {
+    windowWidth = WrappidData.dimensions.windowWidth;
+    windowHeight = WrappidData.dimensions.windowHeight;
+    console.log(
+      "windowWidth:",
+      windowWidth,
+      "windowHeight:",
+      windowHeight
+    );
+  }
+}
+
+// Run updateDimensions immediately to set initial values
+// updateDimensions();
 
 const UNITS = ["!important"];
 const EXCEPTIONS = [
@@ -25,6 +49,7 @@ const EXCEPTIONS = [
   "right",
   "zIndex",
   "fontWeight",
+  "minWidth",
 ];
 
 const sanitizeClassNames = (classNames: string[]): string[] => {
@@ -44,6 +69,27 @@ const sanitizeClassNames = (classNames: string[]): string[] => {
 export function addFlavor(styleObject: any) {
   const { config } = WrappidData;
 
+  // const viewportToPixels = (value: string): number => {
+  //   if (!windowWidth || !windowHeight) {
+  //     console.warn("windowWidth or windowHeight is not defined.");
+  //     return 0;
+  //   }
+
+  //   const isVw = value.endsWith("vw");
+  //   const isVh = value.endsWith("vh");
+
+  //   const numericValue = parseFloat(value.replace(isVw ? "vw" : "vh", ""));
+
+  //   // Calculate pixels based on viewport dimensions
+  //   if (isVw) {
+  //     return (numericValue / 100) * windowWidth;
+  //   } else if (isVh) {
+  //     return (numericValue / 100) * windowHeight;
+  //   }
+
+  //   throw new Error("Invalid unit: value must end with 'vw' or 'vh'.");
+  // };
+
   /**
    * @todo web cannot be go in else block
    */
@@ -53,6 +99,26 @@ export function addFlavor(styleObject: any) {
     // Handle border radius separately
     let hasBorderRadius = false;
 
+    // Helper function to handle position properties
+    const handlePosition = (originalStyles: any) => {
+      const positionStyles: any = { position: "absolute" };
+
+      // Copy existing positioning properties
+      if (originalStyles.top !== undefined)
+        positionStyles.top = originalStyles.top;
+      if (originalStyles.bottom !== undefined)
+        positionStyles.bottom = originalStyles.bottom;
+      if (originalStyles.left !== undefined)
+        positionStyles.left = originalStyles.left;
+      if (originalStyles.right !== undefined)
+        positionStyles.right = originalStyles.right;
+
+      // For fixed/sticky positions, we might want to calculate initial position
+      // based on scroll position or viewport, but that would need to be handled
+      // at the component level since React Native doesn't support these directly
+
+      return positionStyles;
+    };
     // const validBorderStyles = ["solid", "dotted", "dashed"];
 
     // Helper function to normalize border style
@@ -121,22 +187,28 @@ export function addFlavor(styleObject: any) {
       return flexStyles;
     };
 
-    // Temporary fix
-    const viewportToPercentage = (value: string) => {
-      // Check if the input is in vw or vh, then strip the units
-      const isVw = value.endsWith("vw");
-      const isVh = value.endsWith("vh");
+    const viewportToPixels = (value: string) => {
+      if (value.endsWith("vw")) {
+        const numericValue = parseFloat(value.replace("vw", "").trim());
 
-      if (!isVw && !isVh) {
+        return (numericValue / 100) * windowWidth;
+      } else if (value.endsWith("vh")) {
+        const numericValue = parseFloat(value.replace("vh", "").trim());
+
+        return (numericValue / 100) * windowHeight;
+      } else {
         throw new Error(
           "Invalid input: Please provide a value with 'vw' or 'vh'."
         );
       }
+    };
 
-      const numericValue = parseFloat(value.replace(isVw ? "vw" : "vh", ""));
-
-      // Return the value in percentage format
-      return `${numericValue}%`;
+    const removePx = (val: string) => {
+      // Check if val is a string, contains "px", and remove "px" if true
+      if (typeof val === "string" && val.endsWith("px")) {
+        val = val.replace("px", ""); // Remove "px"
+      }
+      return Number(val);
     };
 
     for (let i = 0; i < keys.length; i++) {
@@ -147,12 +219,53 @@ export function addFlavor(styleObject: any) {
         // eslint-disable-next-line no-console
         //console.log("UNIT", UNITS[j]);
         if (val && typeof val === "string") {
-          val = val.replace(UNITS[j], "");
+          val = val.replace(UNITS[j], "").trim();
+        }
+      }
+
+      if (key === "width" || key === "maxWidth" || key === "minWidth") {
+        console.log("value in vw", val);
+      }
+      if (key === "height" || key === "maxHeight" || key === "minHeight") {
+        console.log("value in vw", val);
+      }
+      if (
+        typeof val === "string" &&
+        (val?.endsWith("vw") || val?.endsWith("vh"))
+      ) {
+        val = viewportToPixels(val);
+      }
+
+      // Handle position properties
+      if (key === "position") {
+        const positionVal = typeof val === "string" ? val.trim() : val;
+
+        if (positionVal === "fixed" || positionVal === "sticky") {
+          // Get position-related styles
+          const positionStyles = handlePosition(positionVal);
+
+          // Apply all position-related styles
+          Object.assign(newStyleObject, positionStyles);
+
+          // Skip to next iteration since we've handled all position properties
+          continue;
+        } else if (positionVal === "relative" || positionVal === "absolute") {
+          newStyleObject[key] = positionVal;
+          continue;
+        } else {
+          // For any other position values, default to relative
+          newStyleObject[key] = "relative";
+          continue;
         }
       }
 
       if (!isNaN(val) && !EXCEPTIONS.includes(key)) {
         val = val + "px";
+      }
+
+      // remove px
+      if (typeof val === "string" && val?.endsWith("px")) {
+        removePx(val);
       }
 
       // Handle border styles
@@ -195,26 +308,6 @@ export function addFlavor(styleObject: any) {
         } else {
           continue;
         }
-      } else if (
-        (key === "height" || key === "minHeight" || key === "maxHeight") &&
-        val?.includes("vh")
-      ) {
-        newStyleObject[key] = viewportToPercentage(val); // Converts vh values to percentages
-        continue;
-      } else if (
-        (key === "width" || key === "minWidth" || key === "maxWidth") &&
-        val?.includes("vw")
-      ) {
-        newStyleObject[key] = viewportToPercentage(val); // Assuming viewportToPercentage can handle vw and vh
-        continue;
-      } else if (
-        key === "position" &&
-        (val === "fixed" ||
-          val === "fixed " ||
-          val === "sticky" ||
-          val === "sticky ")
-      ) {
-        val = "absolute";
       } else if (key === "border" && (val === "unset" || val === "unset ")) {
         key = "border";
         val = "0px";
@@ -283,7 +376,7 @@ export function getEffectiveStyle(classNames: any[]) {
    * Step 1: Get default styles(xs) for className
    * Step 2: Get all styles object filter by classNames and window.width
    */
-
+  updateDimensions();
   const styles = getMergedStyles();
   const mergedDefaultStyles = styles?.mergedDefaultStyles;
   const mergedLargeStyles = styles?.mergedLargeStyles;
