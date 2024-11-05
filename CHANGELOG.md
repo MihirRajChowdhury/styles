@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.171](https://github.com/wrappid/styles/compare/v0.0.170...v0.0.171) (2024-11-02)
+
+
+### Bug Fixes
+
+* **core:** :zap: app bar style fix ([67456da](https://github.com/wrappid/styles/commit/67456da42e9665386796ab2bd7a227061be44718))
+
+### [0.0.170](https://github.com/wrappid/styles/compare/v0.0.169...v0.0.170) (2024-11-02)
+
+
+### Bug Fixes
+
+* **core:** :zap: dialog width fixed ([1381fe6](https://github.com/wrappid/styles/commit/1381fe600f4c4147cd25efc1ce40cc1faa5a9f46))
+
+### [0.0.169](https://github.com/wrappid/styles/compare/v0.0.168...v0.0.169) (2024-11-02)
+
+
+### Bug Fixes
+
+* **core:** :bug: build fix ([140ba24](https://github.com/wrappid/styles/commit/140ba24cd86ac6614853707004197937f6d728d7)), closes [#121](https://github.com/wrappid/styles/issues/121)
+
+### [0.0.168](https://github.com/wrappid/styles/compare/v0.0.167...v0.0.168) (2024-11-02)
+
+
+### Bug Fixes
+
+* **global:** :bug: changes styles related code for mobile application ([d9bed17](https://github.com/wrappid/styles/commit/d9bed17b42f3e8447ff4cc08a94dcea007c69b28)), closes [#121](https://github.com/wrappid/styles/issues/121)
+
 ### [0.0.167](https://github.com/wrappid/styles/compare/v0.0.166...v0.0.167) (2024-10-17)
 
 

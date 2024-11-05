@@ -87,23 +87,20 @@ export default class DefaultSCStyles extends BaseStyle {
       scSurfacesAccordion       : {},
       scSurfacesAccordionDetails: {},
       scSurfacesAccordionSummery: {},
-      scSurfacesAppBar          : {
-        ...defaultUtilityStyles.bgPrimary,
-        ...defaultUtilityStyles.shadowNone
-      },
-      scSurfacesCard          : {},
-      scSurfacesCardActionArea: {},
-      scSurfacesCardActions   : {},
-      scSurfacesCardContent   : {},
-      scSurfacesCardHeader    : {},
-      scSurfacesCardMedia     : {},
-      scSurfacesPaper         : {},
-      scSurfacesToolbar       : {},
+      scSurfacesAppBar          : { ...defaultUtilityStyles.shadowNone },
+      scSurfacesCard            : {},
+      scSurfacesCardActionArea  : {},
+      scSurfacesCardActions     : {},
+      scSurfacesCardContent     : {},
+      scSurfacesCardHeader      : {},
+      scSurfacesCardMedia       : {},
+      scSurfacesPaper           : {},
+      scSurfacesToolbar         : {},
       /**************************************************
        * NAVIGATION
        *************************************************/
-      scNavigationTab         : {},
-      scNavigationTabMobile   : {
+      scNavigationTab           : {},
+      scNavigationTabMobile     : {
         minHeight     : 48,
         minWidth      : 100,
         alignItems    : "center",
