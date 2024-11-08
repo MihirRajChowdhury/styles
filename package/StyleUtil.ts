@@ -18,8 +18,8 @@ import UtilityClasses from "./utility/UtilityClasses";
 // const { windowWidth, windowHeight } = WrappidData?.dimensions ?? {};
 
 // Define module-level variables for dimensions
-let windowWidth: number | null = null;
-let windowHeight: number | null = null;
+let windowWidth: number = 0;
+let windowHeight: number = 0;
 
 // Function to update dimensions from WrappidData
 function updateDimensions() {
