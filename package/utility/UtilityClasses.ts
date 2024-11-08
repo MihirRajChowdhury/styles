@@ -744,16 +744,18 @@ const UtilityClasses = {
   /**************************************************
    * Float
    *************************************************/
-  FLOAT: {
-    START: "floatStart",
-    END: "floatEnd",
-    NONE: "floatNone",
-    SM: { START: "smFloatStart", END: "smFloatEnd", NONE: "smFloatNone" },
-    MD: { START: "mdFloatStart", END: "mdFloatEnd", NONE: "mdFloatNone" },
-    LG: { START: "lgFloatStart", END: "lgFloatEnd", NONE: "lgFloatNone" },
-    XL: { START: "xlFloatStart", END: "xlFloatEnd", NONE: "xlFloatNone" },
-    XXL: { START: "xxlFloatStart", END: "xxlFloatEnd", NONE: "xxlFloatNone" },
-  },
+  // commented, as not working in react native
+  
+  // FLOAT: {
+  //   START: "floatStart",
+  //   END: "floatEnd",
+  //   NONE: "floatNone",
+  //   SM: { START: "smFloatStart", END: "smFloatEnd", NONE: "smFloatNone" },
+  //   MD: { START: "mdFloatStart", END: "mdFloatEnd", NONE: "mdFloatNone" },
+  //   LG: { START: "lgFloatStart", END: "lgFloatEnd", NONE: "lgFloatNone" },
+  //   XL: { START: "xlFloatStart", END: "xlFloatEnd", NONE: "xlFloatNone" },
+  //   XXL: { START: "xxlFloatStart", END: "xxlFloatEnd", NONE: "xxlFloatNone" },
+  // },
 
   /**************************************************
    * Interactions

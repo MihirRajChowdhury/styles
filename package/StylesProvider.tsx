@@ -4,7 +4,11 @@ import { useSelector } from "react-redux";
 import { updateTheme } from "./base/BaseStyle";
 import { ThemeManager } from "./base/ThemeManager";
 import { AppStylesContext, ThemeContext } from "./config/contextHandler";
-import { WrappidDataContext } from "./context/WrappidContext";
+import {
+  WrappidDataContext,
+  WrappidDispatchContext
+} from "./context/WrappidContext";
+import { UPDATE_DIMENSIONS } from "./context/wrappidReducer";
 import DefaultSCStyles from "./styledComponents/DefaultSCStyles";
 import LargeSCStyles from "./styledComponents/LargeSCStyles";
 import MediumSCStyles from "./styledComponents/MediumSCStyles";
@@ -46,8 +50,8 @@ export let mergedXXLargeStyles = {
   ...new XXLargeSCStyles().style,
 };
 
-export let _coreStyles : any;
-export let _appStyles : any;
+export let _coreStyles: any;
+export let _appStyles: any;
 
 export let theme = DEFAULT_THEME;
 
@@ -67,57 +71,76 @@ export default function StylesProvider(props: {
   coreStyles: any;
   children: any;
   themeID?: string;
+  dimensions: any;
 }) {
-  const { themeID, appStyles, coreStyles, children } = props;
+  const { themeID, appStyles, coreStyles, children, dimensions } = props;
   const [styleFiles, setStyles] = useState<any>({});
   const [providerId, setProviderId] = useState<any>(null);
 
   const [currentTheme, setCurrentTheme] = useState(theme);
 
-  const { themes = {}, pageThemeID } = React.useContext(WrappidDataContext);
+  const {
+    themes = {},
+    pageThemeID,
+    // eslint-disable-next-line etc/no-commented-out-code
+    // const { dimensions: wdDimensions } = WrappidData;
+    dimensions: wdDimensions,
+  } = React.useContext(WrappidDataContext);
   const { userThemeID } = useSelector((state: any) => state?.app);
+  const dispatch = React.useContext(WrappidDispatchContext);
 
-  const mergeJson = (oldJson:any = {}, newJson:any = {} ) => {
-    const convertedJSON:any = { ...oldJson };
+  const mergeJson = (oldJson: any = {}, newJson: any = {}) => {
+    const convertedJSON: any = { ...oldJson };
 
-    if((Array.isArray(oldJson) && !Array.isArray(newJson)) || (!Array.isArray(oldJson) && Array.isArray(newJson)) ){
+    if (
+      (Array.isArray(oldJson) && !Array.isArray(newJson)) ||
+      (!Array.isArray(oldJson) && Array.isArray(newJson))
+    ) {
       throw new Error("JSON value type mismatch");
     }
-    if(Array.isArray(oldJson) && Array.isArray(newJson)){
+    if (Array.isArray(oldJson) && Array.isArray(newJson)) {
       return [...oldJson, ...newJson];
     }
-    if(Object.keys(oldJson).length <= 0){
+    if (Object.keys(oldJson).length <= 0) {
       return newJson;
     }
     for (const key in oldJson) {
-      if(Object.prototype.hasOwnProperty.call(newJson, key)){
+      if (Object.prototype.hasOwnProperty.call(newJson, key)) {
         const keyType = typeof oldJson[key];
 
-        if(keyType === "object" ){
+        if (keyType === "object") {
           convertedJSON[key] = mergeJson(oldJson[key], newJson[key]);
         } else {
           convertedJSON[key] = newJson[key];
         }
-      } 
+      }
     }
-    
+
     return convertedJSON;
   };
 
   useEffect(() => {
-    const mergeTheme:DEFAULT_THEME_TYPES = { ...currentTheme };
+    if (dimensions && dimensions?.windowWidth && dimensions?.windowHeight) {
+      dispatch({
+        payload: dimensions,
+        type   : UPDATE_DIMENSIONS,
+      });
+    }
+  }, [dimensions]);
+
+  useEffect(() => {
+    const mergeTheme: DEFAULT_THEME_TYPES = { ...currentTheme };
     let tempTheme: any = {};
 
     if (themeID && Object.keys(themes).includes(themeID)) {
       tempTheme = themes[themeID]?.theme || {};
     } else if (pageThemeID && Object.keys(themes).includes(pageThemeID)) {
       tempTheme = themes[pageThemeID]?.theme || {};
-
     } else if (userThemeID && Object.keys(themes).includes(userThemeID)) {
       tempTheme = themes[userThemeID]?.theme || {};
     }
-    const mergedTheme:any  = mergeJson(mergeTheme, tempTheme);
-    
+    const mergedTheme: any = mergeJson(mergeTheme, tempTheme);
+
     setCurrentTheme(mergedTheme);
   }, [themes, themeID, userThemeID, pageThemeID]);
 
@@ -293,12 +316,22 @@ export default function StylesProvider(props: {
     setProviderId("style-provider" + new Date());
   }, [currentTheme]);
 
-  return theme && providerId ? (
-    <AppStylesContext.Provider
-      key={providerId}
-      value={{ ...styleFiles, ...(theme || {}) }}
-    >
-      <ThemeContext.Provider value={theme}>{children}</ThemeContext.Provider>
-    </AppStylesContext.Provider>
-  ) : null;
+  return (
+    wdDimensions &&
+    wdDimensions?.windowWidth &&
+    wdDimensions?.windowHeight && (
+      <>
+        {theme && providerId ? (
+          <AppStylesContext.Provider
+            key={providerId}
+            value={{ ...styleFiles, ...(theme || {}) }}
+          >
+            <ThemeContext.Provider value={theme}>
+              {children}
+            </ThemeContext.Provider>
+          </AppStylesContext.Provider>
+        ) : null}
+      </>
+    )
+  );
 }

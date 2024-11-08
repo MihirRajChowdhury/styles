@@ -19,7 +19,19 @@ type WrappidConfigDatatype = {
   otpLength?: number;
 };
 
+type DimensionsType = {
+  screenFontScale?: any;
+  screenHeight?: any;
+  screenScale?: any;
+  screenWidth?: any;
+  windowFontScale?: any;
+  windowHeight?: any;
+  windowScale?: any;
+  windowWidth?: any;
+};
+
 export type WrapidDataType = {
+  dimensions: DimensionsType;
   config: WrappidConfigDatatype;
   development: {[key: string]: any}
   pageThemeID: string | undefined;
@@ -29,6 +41,7 @@ export type WrapidDataType = {
 export const wrappidInitialData: WrapidDataType = {
   config     : { defaultTheme: "WrappidTheme", environment: "devlopment", platform: "web" },
   development: {},
+  dimensions : {},
   modules    : {},
   pageThemeID: undefined,
   themes     : { wrappidTheme: { name: "Wrappid Theme", theme: DEFAULT_THEME } }
