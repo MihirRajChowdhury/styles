@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.174](https://github.com/wrappid/styles/compare/v0.0.173...v0.0.174) (2024-11-08)
+
+
+### Bug Fixes
+
+* **core:** :fire: build working now ([e083d92](https://github.com/wrappid/styles/commit/e083d92506a6bb4746bca3a922bae5c429f142c2))
+
 ### [0.0.173](https://github.com/wrappid/styles/compare/v0.0.172...v0.0.173) (2024-11-08)
 
 
